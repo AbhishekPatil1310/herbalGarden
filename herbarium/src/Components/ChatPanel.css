@@ -1,0 +1,63 @@
+/* ChatPanel.css */
+
+.chat-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 20rem; /* 80 * 0.25rem = 20rem = 320px */
+  background-color: white;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+              0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-panel-header {
+  padding: 1rem;
+  border-bottom: 1px solid #e5e7eb; /* Tailwind's border-gray-200 */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chat-panel-title {
+  font-size: 1.125rem; /* text-lg */
+  font-weight: 600; /* font-semibold */
+}
+
+.chat-panel-close-btn {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+
+.chat-panel-body {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.chat-panel-message {
+  color: #6b7280; /* text-gray-500 */
+}
+
+.chat-panel-footer {
+  padding: 1rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.chat-panel-input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #d1d5db; /* border-gray-300 */
+  border-radius: 0.25rem; /* rounded */
+  outline: none;
+}
+
+.chat-panel-input:focus {
+  border-color: #3b82f6; /* focus:ring-blue-500 */
+  box-shadow: 0 0 0 1px #3b82f6;
+}
