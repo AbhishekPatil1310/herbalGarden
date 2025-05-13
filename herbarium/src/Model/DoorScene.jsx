@@ -2,9 +2,10 @@
 import { Canvas } from '@react-three/fiber'
 import { Environment, OrbitControls } from '@react-three/drei'
 import Sparrow from './sparrow'
+import ChatPanel from '../Components/ChatPanel'
 
 export default function Chidiya() {
-  return (
+  return (<>
     <div id = 'Chidiya'>
           <Canvas camera={{ position: [0, 5, 10], fov: 50 }}>
       <ambientLight intensity={0.5} />
@@ -12,6 +13,9 @@ export default function Chidiya() {
       <Sparrow />
       <OrbitControls /> {/* Optional to explore scene */}
     </Canvas>
+
     </div>
+    <ChatPanel />
+  </>
   )
 }

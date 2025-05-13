@@ -141,7 +141,7 @@ export const HomeB = () => {
       onClick={() => navigate('/home')}
       className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md transition"
     >
-      Go to Home
+      ⬅Go to Home
     </button>
 
   );

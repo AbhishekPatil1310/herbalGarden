@@ -26,7 +26,6 @@ code {
 
 #forestDoor {
   position: fixed;
-  top: 25px;
   right: 0;
   width: 100vw;
   height: 100vh;
@@ -35,7 +34,7 @@ code {
 
 #Forest {
   position: fixed;
-  top: 38px;
+  top: 0px;
   left: 0;
   width: 100vw;
   height: 100vh;
@@ -129,12 +128,30 @@ code {
     background-position: 0 0;
   }
 }
-
 #Chidiya {
   position: fixed;
   bottom: 50px;
   right: 0;
   width: 200px;
   height: 200px;
-  z-index: 999;
+  z-index: 40;
 }
+
+/* Medium screens (tablets) */
+@media (max-width: 768px) {
+  #Chidiya {
+    width: 150px;
+    height: 150px;
+    bottom: 40px;
+  }
+}
+
+/* Small screens (phones) */
+@media (max-width: 480px) {
+  #Chidiya {
+    width: 100px;
+    height: 100px;
+    bottom: 30px;
+  }
+}
+
