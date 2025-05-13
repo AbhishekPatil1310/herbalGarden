@@ -1,7 +1,7 @@
 // components/chat/ChatPanel.jsx
 import { useChatPanel } from '../context/ChatPanelContext';
 import { motion } from 'framer-motion';
-import './ChatPanel.css'; // Import the CSS file
+import '../Style/ChatPanel.css'; // Import the CSS file
 
 const ChatPanel = () => {
   const { isOpen, closePanel } = useChatPanel();

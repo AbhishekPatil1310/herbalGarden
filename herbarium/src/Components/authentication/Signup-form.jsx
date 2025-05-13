@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import "./SignupForm.css";
+import "../../Style/SignupForm.css";
 
 const signupSchema = z
   .object({

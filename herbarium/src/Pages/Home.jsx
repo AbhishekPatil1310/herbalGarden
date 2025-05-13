@@ -1,5 +1,5 @@
 import React from "react";
-import "./Home.css";
+import "../Style/Home.css";
 import Chidiya from "../Model/DoorScene";
 
 export default function Home() {
