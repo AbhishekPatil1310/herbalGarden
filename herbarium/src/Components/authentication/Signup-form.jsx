@@ -1,20 +1,21 @@
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
-import { useAuth } from '../../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
-import React, { forwardRef } from 'react';
+import React, { forwardRef } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import "./SignupForm.css";
 
 const signupSchema = z
   .object({
-    name: z.string().min(2, { message: 'Name must be at least 2 characters' }),
-    email: z.string().email(),
-    password: z.string().min(6),
+    name: z.string().min(2, { message: "Name must be at least 2 characters" }),
+    email: z.string().email({ message: "Invalid email address" }),
+    password: z.string().min(6, { message: "Password must be at least 6 characters" }),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords don't match",
-    path: ['confirmPassword'],
+    path: ["confirmPassword"],
   });
 
 export default function SignupForm({ switchToLogin }) {
@@ -35,42 +36,34 @@ export default function SignupForm({ switchToLogin }) {
     });
 
     if (result.success) {
-      navigate('/home');
+      navigate("/home");
     }
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <InputField label="Full Name" {...register('name')} error={errors.name} />
-      <InputField label="Email" {...register('email')} error={errors.email} />
+    <form onSubmit={handleSubmit(onSubmit)} className="signup-form">
+      <InputField label="Full Name" {...register("name")} error={errors.name} />
+      <InputField label="Email" {...register("email")} error={errors.email} />
       <InputField
         label="Password"
         type="password"
-        {...register('password')}
+        {...register("password")}
         error={errors.password}
       />
       <InputField
         label="Confirm Password"
         type="password"
-        {...register('confirmPassword')}
+        {...register("confirmPassword")}
         error={errors.confirmPassword}
       />
 
-      <button
-        type="submit"
-        disabled={authLoading}
-        className="w-full bg-blue-600 text-white py-2 px-4 rounded-md"
-      >
-        {authLoading ? 'Creating Account...' : 'Create Account'}
+      <button type="submit" disabled={authLoading} className="submit-button">
+        {authLoading ? "Creating Account..." : "Create Account"}
       </button>
 
-      <p className="text-center text-sm text-gray-600">
-        Already have an account?{' '}
-        <button
-          type="button"
-          onClick={switchToLogin}
-          className="text-blue-600 hover:underline"
-        >
+      <p className="switch-text">
+        Already have an account?{" "}
+        <button type="button" onClick={switchToLogin} className="switch-link">
           Login
         </button>
       </p>
@@ -78,24 +71,19 @@ export default function SignupForm({ switchToLogin }) {
   );
 }
 
-// ✅ Fixed InputField with forwardRef
-const InputField = forwardRef(
-  ({ label, type = 'text', error, ...props }, ref) => {
-    return (
-      <div>
-        <label className="block text-sm font-medium text-gray-700">
-          {label}
-        </label>
-        <input
-          type={type}
-          ref={ref}
-          className="mt-1 w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-1 focus:ring-blue-500"
-          {...props}
-        />
-        {error && <p className="mt-1 text-sm text-red-600">{error.message}</p>}
-      </div>
-    );
-  }
-);
+const InputField = forwardRef(({ label, type = "text", error, ...props }, ref) => {
+  return (
+    <div className="input-field">
+      <label className="input-label">{label}</label>
+      <input
+        type={type}
+        ref={ref}
+        className="input-box"
+        {...props}
+      />
+      {error && <p className="error-message">{error.message}</p>}
+    </div>
+  );
+});
 
-InputField.displayName = 'InputField'; // Required to avoid warning with forwardRef
+InputField.displayName = "InputField";

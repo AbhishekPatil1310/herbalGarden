@@ -9,6 +9,7 @@ export const ChatPanelProvider = ({ children }) => {
   const location = useLocation();
 
   const togglePanel = () => setIsOpen((prev) => !prev);
+  const openPanel = () => setIsOpen(true);
   const closePanel = () => setIsOpen(false);
 
   useEffect(() => {
@@ -16,7 +17,7 @@ export const ChatPanelProvider = ({ children }) => {
   }, [location]);
 
   return (
-    <ChatPanelContext.Provider value={{ isOpen, togglePanel, closePanel }}>
+    <ChatPanelContext.Provider value={{ isOpen, togglePanel, openPanel, closePanel }}>
       {children}
     </ChatPanelContext.Provider>
   );
