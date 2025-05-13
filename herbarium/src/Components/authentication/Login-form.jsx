@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import "./LoginForm.css";
+import "../../Style/LoginForm.css";
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address" }),
