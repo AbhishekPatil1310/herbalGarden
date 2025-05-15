@@ -8,7 +8,7 @@
   width: 20rem; /* 80 * 0.25rem = 20rem = 320px */
   background-color: white;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-              0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    0 4px 6px -4px rgba(0, 0, 0, 0.1);
   z-index: 50;
   display: flex;
   flex-direction: column;
@@ -60,4 +60,50 @@
 .chat-panel-input:focus {
   border-color: #3b82f6; /* focus:ring-blue-500 */
   box-shadow: 0 0 0 1px #3b82f6;
+}
+.chat-panel-body {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.chat-panel-bubble {
+  max-width: 70%;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.chat-panel-bubble.user {
+  align-self: flex-end;
+  background-color: #dcf8c6;
+  color: #333;
+  border-top-right-radius: 0;
+}
+
+.chat-panel-bubble.bot {
+  align-self: flex-start;
+  background-color: #f1f1f1;
+  color: #000;
+  border-top-left-radius: 0;
+}
+
+.chat-panel-send-btn {
+  margin-left: 10px;
+  padding: 8px 14px;
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.chat-panel-send-btn:hover {
+  background-color: #357abd;
 }
