@@ -2,6 +2,8 @@
 import React from "react";
 import ForestModelViewer from "../Model/ForestModel";
 import { HomeB } from "../Model/ForestModel";
+import Chidiya from "../Model/DoorScene";
+
 
 function World() {
   return (
@@ -12,7 +14,13 @@ function World() {
     <div id="Forest" className="w-full h-screen">
       <ForestModelViewer modelPath="Models/onlyCubes.glb" />
       
-    </div></>
+    </div>
+    <Chidiya />
+    
+    
+    
+    
+    </>
   );
 }
 
