@@ -1,40 +1,36 @@
 import { useChatPanel } from '../context/ChatPanelContext';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-import axios from 'axios';
 import '../Style/ChatPanel.css';
-import { getGeminiResponse } from '../api/gemini'; // adjust the path to where your function is saved
+import { getGeminiResponse } from '../api/gemini';
 
 const ChatPanel = () => {
   const { isOpen, closePanel } = useChatPanel();
   const [message, setMessage] = useState('');
-  const [messages, setMessages] = useState([]); // [{ sender: 'user' | 'bot', text: '...' }]
+  const [messages, setMessages] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-const handleSend = async () => {
-  if (!message.trim()) return;
+  const handleSend = async () => {
+    if (!message.trim()) return;
 
-  const userMessage = { sender: 'user', text: message };
-  setMessages((prev) => [...prev, userMessage]);
+    const userMessage = { sender: 'user', text: message };
+    setMessages((prev) => [...prev, userMessage]);
+    setMessage('');
+    setLoading(true);
 
-  try {
-    const reply = await getGeminiResponse(message);
-
-    const botMessage = {
-      sender: 'bot',
-      text: reply,
-    };
-
-    setMessages((prev) => [...prev, botMessage]);
-  } catch (error) {
-    setMessages((prev) => [
-      ...prev,
-      { sender: 'bot', text: 'Failed to get response.' },
-    ]);
-  }
-
-  setMessage('');
-};
-
+    try {
+      const reply = await getGeminiResponse(message);
+      const botMessage = { sender: 'bot', text: reply };
+      setMessages((prev) => [...prev, botMessage]);
+    } catch (error) {
+      setMessages((prev) => [
+        ...prev,
+        { sender: 'bot', text: 'Failed to get response.' },
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <motion.div
@@ -45,32 +41,47 @@ const handleSend = async () => {
     >
       <div className="chat-panel-header">
         <h2 className="chat-panel-title">AI Assistant</h2>
-        <button className="chat-panel-close-btn" onClick={closePanel}>✕</button>
+        <button className="chat-panel-close-btn" onClick={closePanel}>
+          ✕
+        </button>
       </div>
 
       <div className="chat-panel-body">
         {messages.map((msg, idx) => (
           <div
             key={idx}
-            className={`chat-panel-bubble ${msg.sender === 'user' ? 'user' : 'bot'}`}
+            className={`chat-panel-bubble ${
+              msg.sender === 'user' ? 'user' : 'bot'
+            }`}
           >
             {msg.text}
           </div>
         ))}
+        {loading && (
+          <div className="chat-panel-bubble bot">
+            <span className="thinking-dots">
+              <span>.</span>
+              <span>.</span>
+              <span>.</span>
+            </span>
+          </div>
+        )}
       </div>
 
       <div className="chat-panel-footer">
-        <input
-          type="text"
-          placeholder="Type a message..."
-          className="chat-panel-input"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-        />
-        <button className="chat-panel-send-btn" onClick={handleSend}>
-          Send
-        </button>
+        <div className="chat-panel-input-wrapper">
+          <input
+            type="text"
+            placeholder="Type a message..."
+            className="chat-panel-input"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+          />
+          <button className="chat-panel-send-icon" onClick={handleSend}>
+            ➤
+          </button>
+        </div>
       </div>
     </motion.div>
   );
