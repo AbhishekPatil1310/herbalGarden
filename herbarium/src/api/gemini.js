@@ -6,14 +6,15 @@ const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-
 
 
 
-export async function getGeminiResponse(prompt) {
-    let limit = " give response under 100 words";
+export async function getGeminiResponse(preInfo,prompt) {
+    // let limit = " give response under 100 words";
+    let fullPrompt = `Regarding the follwing plant information ${preInfo}, Answer the ${prompt} within 100 words`;
     
 
 
     console.log(prompt);
     const data = {
-        contents: [{ parts: [{ text: prompt+limit }] }]
+        contents: [{ parts: [{ text: fullPrompt }] }]
 
     };
 
