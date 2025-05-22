@@ -12,7 +12,7 @@ function World() {
       <HomeB/>
     </div>
     <div id="Forest" className="w-full h-screen">
-      <ForestModelViewer modelPath="Models/onlyCubes.glb" />
+      <ForestModelViewer modelPath="Models/withground.glb" />
       
     </div>
     <Chidiya />

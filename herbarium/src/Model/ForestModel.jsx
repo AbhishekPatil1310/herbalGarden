@@ -168,7 +168,7 @@ const ForestModelViewer = ({ modelPath }) => {
   return (
     <div id="Forest" className="relative w-full h-screen overflow-hidden">
 
-      <Canvas camera={{ position: [0, 5, 1], fov: 65 }}>
+      <Canvas camera={{ position: [5, 1, 10], fov: 65 }}>
         <Sky sunPosition={[0, 5, 1]} />
         <ambientLight intensity={0.6} />
         <directionalLight position={[0, 20, 10]} />
