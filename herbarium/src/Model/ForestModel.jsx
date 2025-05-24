@@ -1,12 +1,12 @@
 import React, { Suspense, useState, useEffect, useRef } from "react";
 import { Canvas, useThree, useFrame } from "@react-three/fiber";
-import { MapControls, useGLTF, Sky,Html} from "@react-three/drei";
+import { MapControls, useGLTF, Sky } from "@react-three/drei";
 import ObjectPopup from "./Popup";
 import * as THREE from "three";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const Model = ({ url }) => {
+const Model = ({ url, onLoaded }) => {
   const { scene } = useGLTF(url);
 
   useEffect(() => {
@@ -15,6 +15,10 @@ const Model = ({ url }) => {
         child.userData.clickable = true;
       }
     });
+
+    if (onLoaded) {
+      onLoaded(); // Call when model is fully loaded
+    }
   }, [scene]);
 
   return <primitive object={scene} scale={1.5} position={[0, 0, 0]} />;
@@ -25,17 +29,17 @@ const CameraController = () => {
   const controlsRef = useRef();
 
   const bounds = {
-    minX: -300,
-    maxX: 300,
-    minZ: -300,
-    maxZ: 300,
+    minX: -350,
+    maxX: 350,
+    minZ: -350,
+    maxZ: 350,
     minY: 5,
     maxY: 50,
   };
 
   useEffect(() => {
     camera.position.set(0, 1, 1);
-    camera.lookAt(0, 0, 0);
+    camera.lookAt(0, 2, 0);
   }, [camera]);
 
   useFrame(() => {
@@ -80,10 +84,7 @@ const ClickHandler = ({ setSelectedInfo }) => {
 
         window.dispatchEvent(new CustomEvent("cube-clicked", { detail: { cubeName } }));
 
-        if (cubeName === "Object_2") {
-          return;
-        }
-        if (cubeName == "10450_Rectangular_Grass_Patch_v1_iterations-2"){
+        if (cubeName === "Object_2" || cubeName === "10450_Rectangular_Grass_Patch_v1_iterations-2") {
           return;
         }
 
@@ -141,41 +142,23 @@ export const HomeB = () => {
       onClick={() => navigate('/home')}
       className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md transition"
     >
-      ⬅Go to Home
+      ⬅ Go to Home
     </button>
-
   );
 };
 
-// Optional: If you want a texture on ground (grass, dirt, etc.)
-const Ground = () => {
-  // Example texture (skip if you don't want texture)
-  // const texture = useLoader(TextureLoader, '/textures/grass.jpg');
-  
-  return (
-    <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>
-      <planeGeometry args={[1000, 1000]} />
-      <meshStandardMaterial color="#228B22" />  {/* Greenish ground color */}
-      {/* <meshStandardMaterial map={texture} /> */} {/* If you want a texture */}
-    </mesh>
-  );
-};
-
-
-const ForestModelViewer = ({ modelPath }) => {
+const ForestModelViewer = ({ modelPath, onModelLoaded }) => {
   const [selectedInfo, setSelectedInfo] = useState(null);
 
   return (
     <div id="Forest" className="relative w-full h-screen overflow-hidden">
-
       <Canvas camera={{ position: [5, 1, 10], fov: 65 }}>
         <Sky sunPosition={[0, 5, 1]} />
         <ambientLight intensity={0.6} />
         <directionalLight position={[0, 20, 10]} />
 
         <Suspense fallback={null}>
-          <Model url={modelPath} />
-          {/* <Ground /> */}
+          <Model url={modelPath} onLoaded={onModelLoaded} />
         </Suspense>
 
         <CameraController />
@@ -195,7 +178,6 @@ const ForestModelViewer = ({ modelPath }) => {
           />
         )}
       </Canvas>
-      
     </div>
   );
 };

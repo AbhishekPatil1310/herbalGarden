@@ -51,23 +51,31 @@ code {
   border: 1px solid #ccc;
   font-size: 10px;
   width: 300px;
+  max-height: 300px;        /* Added: limit the popup height */
+  overflow-y: auto;         /* Added: enable vertical scrolling */
+  box-sizing: border-box;   /* Ensures padding is included in width/height */
 }
 
-@media (max-width: 768px){
-#popup{
+/* Tablet */
+@media (max-width: 768px) {
+  #popup {
     width: 300px;
     font-size: 12px;
     padding: 16px;
-}
+    max-height: 60vh;       /* Adjust height responsively */
+  }
 }
 
-@media (max-width: 480px){
-#popup{
+/* Mobile */
+@media (max-width: 480px) {
+  #popup {
     width: 250px;
     font-size: 6px;
     padding: 8px;
+    max-height: 50vh;       /* Further limit height on smaller screens */
+  }
 }
-}
+
 
 #button,
 #Ht {
