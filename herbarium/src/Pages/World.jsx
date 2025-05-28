@@ -20,7 +20,7 @@ function World() {
 
       <div id="Forest" className="w-full h-screen">
         <ForestModelViewer
-          modelPath="Models/world1.glb"
+          modelPath="Models/garden.glb"
           onModelLoaded={() => setIsLoading(false)}
         />
       </div>

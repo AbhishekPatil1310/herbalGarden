@@ -1,11 +1,12 @@
 import React, { Suspense, useState, useEffect, useRef } from "react";
 import { Canvas, useThree, useFrame } from "@react-three/fiber";
-import { MapControls, useGLTF, Sky } from "@react-three/drei";
+import { OrbitControls, useGLTF, Sky } from "@react-three/drei"; // Switched to OrbitControls
 import ObjectPopup from "./Popup";
 import * as THREE from "three";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+// Load and render GLB model as-is (like a 3D map)
 const Model = ({ url, onLoaded }) => {
   const { scene } = useGLTF(url);
 
@@ -13,56 +14,43 @@ const Model = ({ url, onLoaded }) => {
     scene.traverse((child) => {
       if (child.isMesh) {
         child.userData.clickable = true;
+        child.castShadow = true;
+        child.receiveShadow = true;
       }
     });
 
     if (onLoaded) {
-      onLoaded(); // Call when model is fully loaded
+      onLoaded(); // Notify when model is fully loaded
     }
   }, [scene]);
 
-  return <primitive object={scene} scale={1.5} position={[0, 0, 0]} />;
+  return <primitive object={scene} />;
 };
 
+// Full 3D control using OrbitControls (not restricted like MapControls)
 const CameraController = () => {
   const { camera, gl } = useThree();
-  const controlsRef = useRef();
-
-  const bounds = {
-    minX: -350,
-    maxX: 350,
-    minZ: -350,
-    maxZ: 350,
-    minY: 5,
-    maxY: 50,
-  };
 
   useEffect(() => {
-    camera.position.set(0, 1, 1);
-    camera.lookAt(0, 2, 0);
+    camera.position.set(20, 20, 20); // Set an angled 3D view
+    camera.lookAt(0, 0, 0);
   }, [camera]);
 
-  useFrame(() => {
-    camera.position.x = THREE.MathUtils.clamp(camera.position.x, bounds.minX, bounds.maxX);
-    camera.position.y = THREE.MathUtils.clamp(camera.position.y, bounds.minY, bounds.maxY);
-    camera.position.z = THREE.MathUtils.clamp(camera.position.z, bounds.minZ, bounds.maxZ);
-  });
-
   return (
-    <MapControls
-      ref={controlsRef}
+    <OrbitControls
       args={[camera, gl.domElement]}
-      enableRotate={false}
-      enableZoom={true}
-      enablePan={true}
-      minDistance={1}
-      maxDistance={150}
-      zoomSpeed={1}
-      panSpeed={2}
+      enableDamping
+      dampingFactor={0.05}
+      rotateSpeed={0.8}
+      minPolarAngle={0} // Allow full top-down view
+      maxPolarAngle={Math.PI / 2} // 🔒 Stop before camera goes underneath
+      minDistance={5}
+      maxDistance={70}
     />
   );
 };
 
+// Handles object click detection
 const ClickHandler = ({ setSelectedInfo }) => {
   const { camera, scene, gl } = useThree();
   const raycaster = useRef(new THREE.Raycaster());
@@ -84,7 +72,7 @@ const ClickHandler = ({ setSelectedInfo }) => {
 
         window.dispatchEvent(new CustomEvent("cube-clicked", { detail: { cubeName } }));
 
-        if (cubeName === "Object_2" || cubeName === "10450_Rectangular_Grass_Patch_v1_iterations-2") {
+        if (cubeName === "Object_2" || cubeName === "textures" || cubeName === "Mesh_0007" || cubeName === "Mesh_0007_4") {
           return;
         }
 
@@ -94,6 +82,9 @@ const ClickHandler = ({ setSelectedInfo }) => {
           console.error("Failed to send cube name to log endpoint:", error);
         }
 
+        // Skip API call if cubeName starts with "textures"
+        if (cubeName.toLowerCase().startsWith("textures")) return;
+
         try {
           const res = await axios.get(`http://localhost:5000/api/v1/cube/${cubeName}`);
           const plant = res.data;
@@ -102,11 +93,9 @@ const ClickHandler = ({ setSelectedInfo }) => {
             CommonName: plant.CommonName,
             Cube: plant.Cube,
             position: worldPosition,
-            family: plant.Family,
-            scientificName: plant.scientificName,
-            collector: plant.Collector,
-            country: plant.Country,
+            ScientificName: plant.ScientificName,
             uses: plant.Uses,
+            EnvironmentNeededForCultivation: plant.EnvironmentNeededForCultivation
           });
         } catch (error) {
           console.error("Plant info not found:", error);
@@ -115,13 +104,12 @@ const ClickHandler = ({ setSelectedInfo }) => {
             position: worldPosition,
             description: "No info found in database.",
             CommonName: "",
-            family: "",
-            scientificName: "",
-            collector: "",
-            country: "",
+            ScientificName: "",
             uses: "",
+            EnvironmentNeededForCultivation: "",
           });
         }
+
       }
     }
   };
@@ -134,6 +122,7 @@ const ClickHandler = ({ setSelectedInfo }) => {
   return null;
 };
 
+// Go Home Button
 export const HomeB = () => {
   const navigate = useNavigate();
   return (
@@ -147,15 +136,16 @@ export const HomeB = () => {
   );
 };
 
+// Main 3D Viewer Component
 const ForestModelViewer = ({ modelPath, onModelLoaded }) => {
   const [selectedInfo, setSelectedInfo] = useState(null);
 
   return (
     <div id="Forest" className="relative w-full h-screen overflow-hidden">
-      <Canvas camera={{ position: [5, 1, 10], fov: 65 }}>
-        <Sky sunPosition={[0, 5, 1]} />
-        <ambientLight intensity={0.6} />
-        <directionalLight position={[0, 20, 10]} />
+      <Canvas shadows camera={{ position: [20, 20, 20], fov: 60 }}>
+        <Sky sunPosition={[100, 20, 100]} />
+        <ambientLight intensity={0.5} />
+        <directionalLight position={[10, 50, 10]} intensity={1} castShadow />
 
         <Suspense fallback={null}>
           <Model url={modelPath} onLoaded={onModelLoaded} />
@@ -169,11 +159,9 @@ const ForestModelViewer = ({ modelPath, onModelLoaded }) => {
             Cube={selectedInfo.Cube}
             position={selectedInfo.position}
             CommonName={selectedInfo.CommonName}
-            family={selectedInfo.family}
-            scientificName={selectedInfo.scientificName}
-            collector={selectedInfo.collector}
-            country={selectedInfo.country}
+            ScientificName={selectedInfo.ScientificName}
             uses={selectedInfo.uses}
+            EnvironmentNeededForCultivation={selectedInfo.EnvironmentNeededForCultivation}
             onClose={() => setSelectedInfo(null)}
           />
         )}
