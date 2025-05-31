@@ -45,7 +45,6 @@ export const fetchAuthenticatedUser = async () => {
         credentials: 'include',
       }
     );
-
     if (refreshed.ok) {
       // Try the original request again after refreshing
       const retryRes = await fetch(`${import.meta.env.VITE_API_BASE_URL}/me`, {
@@ -61,4 +60,26 @@ export const fetchAuthenticatedUser = async () => {
 
   if (!res.ok) throw new Error('Unauthorized');
   return res.json();
+};
+
+// Track plant visit
+export const trackPlantVisit = async (cubeName) => {
+  const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/track-visit`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include', // Important for cookies
+    body: JSON.stringify({ cubeName }),
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    const error = new Error(data.message || 'Failed to track plant visit');
+    error.status = res.status;
+    throw error;
+  }
+
+  return data;
 };

@@ -1,6 +1,7 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Html } from '@react-three/drei';
 import EmbeddedModel from './EmbeddedModel';
+import { trackPlantVisit } from '../api/auth'; // Adjust the path as necessary
 
 const ObjectPopup = ({
   Cube,
@@ -14,8 +15,21 @@ const ObjectPopup = ({
   const modelPath = `/Models/${Cube}.glb`;
   const utteranceRef = useRef(null);
 
+  // Track plant visit on component mount
+  useEffect(() => {
+    const track = async () => {
+      try {
+        const result = await trackPlantVisit(Cube);
+        console.log('✅ Visit tracked:', result);
+      } catch (error) {
+        console.error('❌ Failed to track plant visit:', error.message);
+      }
+    };
+
+    track();
+  }, [Cube]);
+
   const handleSpeak = () => {
-    // Cancel any existing speech
     window.speechSynthesis.cancel();
 
     const text = `
@@ -59,10 +73,19 @@ const ObjectPopup = ({
           <EmbeddedModel path={modelPath} />
         </div>
 
-        <p><strong>Common Name:</strong> {CommonName}</p>
-        <p><strong>Scientific Name:</strong> <em>{ScientificName}</em></p>
-        <p><strong>Uses:</strong> {uses}</p>
-        <p><strong>Environment Needed For Cultivation:</strong> {EnvironmentNeededForCultivation}</p>
+        <p>
+          <strong>Common Name:</strong> {CommonName}
+        </p>
+        <p>
+          <strong>Scientific Name:</strong> <em>{ScientificName}</em>
+        </p>
+        <p>
+          <strong>Uses:</strong> {uses}
+        </p>
+        <p>
+          <strong>Environment Needed For Cultivation:</strong>{' '}
+          {EnvironmentNeededForCultivation}
+        </p>
 
         <div className="flex justify-between mt-3 space-x-2">
           <button
@@ -87,7 +110,7 @@ const ObjectPopup = ({
 
         <button
           onClick={() => {
-            window.speechSynthesis.cancel(); // stop speech on close
+            window.speechSynthesis.cancel();
             onClose();
           }}
           className="mt-3 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 w-full"

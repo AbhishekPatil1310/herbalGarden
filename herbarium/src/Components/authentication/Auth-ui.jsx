@@ -2,11 +2,27 @@ import { useState } from 'react';
 import LoginForm from './Login-form';
 import SignupForm from './Signup-form';
 import { useAuth } from '../../context/AuthContext';
+import { Navigate } from 'react-router-dom';
 
 export default function AuthUI() {
   const [activeTab, setActiveTab] = useState('login');
-  const { error } = useAuth();
+  const { user, authLoading, error } = useAuth();
 
+  // While loading auth state, you can show a loader or blank screen
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
+  // If user is logged in, redirect to home
+  if (user) {
+    return <Navigate to="/home" replace />;
+  }
+
+  // Else, show login/signup UI
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-100 p-4">
       <div className="max-w-md w-full bg-white shadow-xl rounded-lg p-6">

@@ -13,6 +13,7 @@ const Navbar = () => {
         <NavItem to="/home" label="Home" />
         <NavItem to="/world" label="Garden" />
         <NavItem to="/about" label="About" />
+        <NavItem to="/quiz" label="Quiz" />
       </div>
       {!isHomePage && <AiIcon />}
     </nav>

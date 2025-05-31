@@ -15,6 +15,7 @@ export const AuthProvider = ({ children }) => {
         // console.log('user : ', user);
         setUser(user);
       } catch (err) {
+        console.log('Error in AuthContext file: ', err);
         setUser(null);
       } finally {
         setAuthLoading(false);
