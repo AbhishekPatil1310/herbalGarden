@@ -1,17 +1,18 @@
-import { useState } from 'react'
-import './App.css'
-import { useNavigate } from 'react-router-dom'
-import Home from './Pages/home'
-import About from './Pages/About'
-import World from './Pages/World'
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
-import AuthUI from './Components/authentication/Auth-ui'
-import ProtectedRoute from './routes/ProtectedRoute'
-import MainLayout from './layout/MainLayout'
-import { ChatPanelProvider } from './context/ChatPanelContext'
+import { useState } from 'react';
+import './App.css';
+import Home from './Pages/Home';
+import About from './Pages/About';
+import World from './Pages/World';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import AuthUI from './Components/authentication/Auth-ui';
+import ProtectedRoute from './routes/ProtectedRoute';
+import MainLayout from './layout/MainLayout';
+import { ChatPanelProvider } from './context/ChatPanelContext';
+import { QuizProvider } from './context/quizContext';
+import Quiz from './Pages/Quiz';
 
 function App() {
-   return (
+  return (
     <Router>
       <ChatPanelProvider>
         <Routes>
@@ -50,11 +51,23 @@ function App() {
               </ProtectedRoute>
             }
           />
-
+          {/* ✅ New Quiz Route */}
+          <Route
+            path="/quiz"
+            element={
+              <ProtectedRoute>
+                <QuizProvider>
+                  <MainLayout>
+                    <Quiz />
+                  </MainLayout>
+                </QuizProvider>
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </ChatPanelProvider>
     </Router>
   );
 }
 
-export default App
+export default App;
