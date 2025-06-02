@@ -14,7 +14,6 @@ export default function Home() {
         <div className="hero-buttons">
           <a href="/World" className="btn primary">Explore Garden</a>
           <a href="/About" className="btn secondary">Learn More</a>
-          <a href="/display" className="btn tertiary">display</a>
         </div>
       </header>
 
