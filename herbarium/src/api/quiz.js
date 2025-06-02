@@ -13,3 +13,10 @@ export const fetchQuizByPlant = async () => {
 
   return response.data;
 };
+
+export const highScore = async () =>{
+  console.log(`sending request to user...`);
+  const res =await axios.get(
+    `${import.meta.VITE_API_BASE_URL}/`
+  )
+}

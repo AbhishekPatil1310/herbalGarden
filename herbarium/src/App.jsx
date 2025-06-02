@@ -10,6 +10,7 @@ import MainLayout from './layout/MainLayout';
 import { ChatPanelProvider } from './context/ChatPanelContext';
 import { QuizProvider } from './context/quizContext';
 import Quiz from './Pages/Quiz';
+import Display from './Pages/display';
 
 function App() {
   return (
@@ -63,6 +64,12 @@ function App() {
                 </QuizProvider>
               </ProtectedRoute>
             }
+          />
+          <Route
+          path = '/display'
+          element={
+            <QuizProvider><Display /></QuizProvider>
+          }
           />
         </Routes>
       </ChatPanelProvider>

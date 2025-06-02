@@ -1,5 +1,5 @@
 import React, { Suspense, useState, useEffect, useRef } from "react";
-import { Canvas, useThree, useFrame } from "@react-three/fiber";
+import { Canvas, useThree } from "@react-three/fiber";
 import { OrbitControls, useGLTF, Sky } from "@react-three/drei"; // Switched to OrbitControls
 import ObjectPopup from "./Popup";
 import * as THREE from "three";
@@ -22,7 +22,7 @@ const Model = ({ url, onLoaded }) => {
     if (onLoaded) {
       onLoaded(); // Notify when model is fully loaded
     }
-  }, [scene]);
+  }, [scene, onLoaded]);
 
   return <primitive object={scene} />;
 };
@@ -51,12 +51,14 @@ const CameraController = () => {
 };
 
 // Handles object click detection
-const ClickHandler = ({ setSelectedInfo }) => {
+const ClickHandler = ({ selectedInfo, setSelectedInfo }) => {
   const { camera, scene, gl } = useThree();
   const raycaster = useRef(new THREE.Raycaster());
   const mouse = useRef(new THREE.Vector2());
 
   const handleClick = async (event) => {
+    if (selectedInfo) return; // Block opening another popup if one is already open
+
     const bounds = gl.domElement.getBoundingClientRect();
     mouse.current.x = ((event.clientX - bounds.left) / bounds.width) * 2 - 1;
     mouse.current.y = -((event.clientY - bounds.top) / bounds.height) * 2 + 1;
@@ -72,17 +74,17 @@ const ClickHandler = ({ setSelectedInfo }) => {
 
         window.dispatchEvent(new CustomEvent("cube-clicked", { detail: { cubeName } }));
 
-        if (cubeName === "Object_2" || cubeName === "textures" || cubeName === "Mesh_0007" || cubeName === "Mesh_0007_4") {
+        // Skip some specific objects from opening popup
+        if (
+          cubeName === "Object_2" ||
+          cubeName === "textures" ||
+          cubeName === "Mesh_0007" ||
+          cubeName === "Mesh_0007_4"
+        ) {
           return;
         }
 
-        try {
-          await axios.post("http://localhost:5000/api/v1/somthing", { cubeName }, { withCredentials: true });
-        } catch (error) {
-          console.error("Failed to send cube name to log endpoint:", error);
-        }
-
-        // Skip API call if cubeName starts with "textures"
+        // Skip if cubeName starts with "textures"
         if (cubeName.toLowerCase().startsWith("textures")) return;
 
         try {
@@ -95,7 +97,7 @@ const ClickHandler = ({ setSelectedInfo }) => {
             position: worldPosition,
             ScientificName: plant.ScientificName,
             uses: plant.Uses,
-            EnvironmentNeededForCultivation: plant.EnvironmentNeededForCultivation
+            EnvironmentNeededForCultivation: plant.EnvironmentNeededForCultivation,
           });
         } catch (error) {
           console.error("Plant info not found:", error);
@@ -109,7 +111,6 @@ const ClickHandler = ({ setSelectedInfo }) => {
             EnvironmentNeededForCultivation: "",
           });
         }
-
       }
     }
   };
@@ -117,7 +118,7 @@ const ClickHandler = ({ setSelectedInfo }) => {
   useEffect(() => {
     gl.domElement.addEventListener("click", handleClick);
     return () => gl.domElement.removeEventListener("click", handleClick);
-  }, [gl]);
+  }, [gl, selectedInfo]); // re-register listener if selectedInfo changes
 
   return null;
 };
@@ -128,7 +129,7 @@ export const HomeB = () => {
   return (
     <button
       id="Ht"
-      onClick={() => navigate('/home')}
+      onClick={() => navigate("/home")}
       className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md transition"
     >
       ⬅ Go to Home
@@ -152,7 +153,7 @@ const ForestModelViewer = ({ modelPath, onModelLoaded }) => {
         </Suspense>
 
         <CameraController />
-        <ClickHandler setSelectedInfo={setSelectedInfo} />
+        <ClickHandler selectedInfo={selectedInfo} setSelectedInfo={setSelectedInfo} />
 
         {selectedInfo && (
           <ObjectPopup

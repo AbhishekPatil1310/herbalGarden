@@ -1,5 +1,5 @@
 import React from "react";
-import "../Style/Home.css";
+import "../Style/Home.css"; // Styles scoped using `.home` class
 import Chidiya from "../Model/DoorScene";
 
 export default function Home() {
@@ -14,6 +14,7 @@ export default function Home() {
         <div className="hero-buttons">
           <a href="/World" className="btn primary">Explore Garden</a>
           <a href="/About" className="btn secondary">Learn More</a>
+          <a href="/display" className="btn tertiary">display</a>
         </div>
       </header>
 

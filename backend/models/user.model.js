@@ -36,7 +36,12 @@ const userSchema = new mongoose.Schema({
       },
     },
   ],
+  
+  highScore:{
+  type: String,
+},
   refreshToken: { type: String }, // Store the latest refresh token
+
 });
 
 userSchema.pre('save', async function (next) {

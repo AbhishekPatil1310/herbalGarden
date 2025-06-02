@@ -1,0 +1,157 @@
+/* IntroScreen.css - using standard CSS instead of Tailwind */
+
+/* Wrapper */
+.intro-wrapper {
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Background Gradient */
+.bg-intro-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom right, #34d399, #10b981, #0d9488);
+}
+
+.bg-intro-pattern {
+  position: absolute;
+  inset: 0;
+  animation: pulse 2s infinite;
+  background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.05) 0, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 20px);
+}
+
+/* Floating Icon Styles */
+.floating-icon {
+  position: absolute;
+  color: white;
+  opacity: 0.3;
+  animation: bounce 2s infinite;
+}
+
+.icon-delay-100 { animation-delay: 0.1s; }
+.icon-delay-300 { animation-delay: 0.3s; }
+.icon-delay-500 { animation-delay: 0.5s; }
+.icon-delay-700 { animation-delay: 0.7s; }
+
+/* Content Wrapper */
+.intro-content {
+  position: relative;
+  z-index: 10;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1.5rem;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Title */
+.intro-title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: white;
+  text-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  animation: slide-down 1s ease-out;
+}
+
+/* Description */
+.intro-description {
+  font-size: 1.125rem;
+  color: white;
+  opacity: 0.9;
+  max-width: 48rem;
+  margin: 0 auto;
+  line-height: 1.75;
+}
+
+/* Feature Card */
+.feature-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+.feature-card:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
+}
+.feature-icon {
+  font-size: 1.875rem;
+  color: white;
+  margin-bottom: 0.75rem;
+}
+.feature-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 0.5rem;
+}
+.feature-text {
+  font-size: 0.875rem;
+  color: white;
+  opacity: 0.8;
+}
+
+/* Icon Row */
+.icon-row {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  font-size: 2rem;
+  color: white;
+  opacity: 0.8;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* Start Button */
+.start-button-wrapper {
+  display: flex;
+  justify-content: center;
+}
+.cssbuttons-io-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 2rem;
+  font-size: 1.5rem;
+  background: linear-gradient(to right, #22c55e, #059669);
+  color: white;
+  font-weight: bold;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+}
+.cssbuttons-io-button:hover {
+  background: linear-gradient(to right, #16a34a, #047857);
+  transform: scale(1.05);
+}
+.cssbuttons-io-button .icon {
+  margin-left: 1rem;
+}
+
+/* Animations */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+@keyframes slide-down {
+  from { transform: translateY(-50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ForestModelViewer, { HomeB } from "../Model/ForestModel";
+import ForestModelViewer ,{HomeB}from "../Model/ForestModel";
 import Chidiya from "../Model/DoorScene";
 import Loader from "../Components/loader";
 

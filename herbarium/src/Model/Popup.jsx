@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { Html } from '@react-three/drei';
 import EmbeddedModel from './EmbeddedModel';
-import { trackPlantVisit } from '../api/auth'; // Adjust the path as necessary
+import { trackPlantVisit } from '../api/auth'; // Adjust path as necessary
 
 const ObjectPopup = ({
   Cube,
@@ -14,13 +14,18 @@ const ObjectPopup = ({
 }) => {
   const modelPath = `/Models/${Cube}.glb`;
   const utteranceRef = useRef(null);
+  const hasTrackedRef = useRef(false);
 
-  // Track plant visit on component mount
+  // Track plant visit only once per popup mount
   useEffect(() => {
+    if (hasTrackedRef.current) return;
+
+    hasTrackedRef.current = true;
+
     const track = async () => {
       try {
-        const result = await trackPlantVisit(Cube);
-        console.log('✅ Visit tracked:', result);
+        console.log('✅ Visit tracked:', Cube);
+        await trackPlantVisit(Cube);
       } catch (error) {
         console.error('❌ Failed to track plant visit:', error.message);
       }
@@ -28,6 +33,25 @@ const ObjectPopup = ({
 
     track();
   }, [Cube]);
+
+  // Close popup on Escape key press
+  useEffect(() => {
+    const handleEsc = (event) => {
+      if (event.key === 'Escape') {
+        window.speechSynthesis.cancel();
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, [onClose]);
+
+  // Prevent multiple popups by disabling clicks outside this popup:
+  // You should handle this at parent component level.
+  // Here just ensure popup is modal-like by stopping click propagation:
+  const handleClickOutside = (e) => {
+    e.stopPropagation(); // Prevent clicks from bubbling up and triggering new popup
+  };
 
   const handleSpeak = () => {
     window.speechSynthesis.cancel();
@@ -60,9 +84,10 @@ const ObjectPopup = ({
   };
 
   return (
-    <Html position={position}>
+    <Html position={position} style={{ pointerEvents: 'auto' }}>
       <div
         id="popup"
+        onClick={handleClickOutside}
         className="bg-white p-4 rounded shadow-lg w-72 text-sm max-h-[30rem] overflow-y-auto"
       >
         <h3 className="text-lg font-bold mb-2 text-center">
