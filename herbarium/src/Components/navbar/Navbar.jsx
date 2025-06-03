@@ -2,6 +2,7 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import NavItem from './NavItem';
 import AiIcon from './AiIcon';
+import Logout from '../LogOutButton';
 import '../../Style/Navbar.css';
 
 const Navbar = () => {
@@ -15,6 +16,7 @@ const Navbar = () => {
         <NavItem to="/world" label="Garden" />
         <NavItem to="/about" label="About" />
         <NavItem to="/quiz" label="Quiz" />
+        <Logout />
       </div>
       {!isHomePage && <AiIcon />}
     </nav>
