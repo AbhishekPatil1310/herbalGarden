@@ -51,3 +51,38 @@ export const trackPlantVisit = async (req, res) => {
 };
 
 
+export const handleHighScore = async (req, res) => {
+try {
+    const userId = req.user._id || req.user.id; // Use whichever your JWT middleware sets
+
+    if (!userId) {
+      return res.status(401).json({ status: false, message: 'Unauthorized' });
+    }
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ status: false, message: 'User not found' });
+    }
+
+    if (req.method === 'GET') {
+      return res.status(200).json({ status: true, highScore: user.highScore || "0" });
+    }
+
+    const { newScore } = req.body;
+
+    // Optional: only update if newScore is higher
+    const currentScore = Number(user.highScore || 0);
+    if (newScore > currentScore) {
+      user.highScore = String(newScore);
+      await user.save();
+      return res.status(200).json({ status: true, message: 'High score updated', highScore: user.highScore });
+    } else {
+      return res.status(200).json({ status: true, message: 'Score not higher than existing', highScore: user.highScore });
+    }
+
+  } catch (err) {
+    console.error('High score error:', err);
+    return res.status(500).json({ status: false, message: 'Server error' });
+  }
+};
