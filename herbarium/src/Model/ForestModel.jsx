@@ -57,7 +57,7 @@ const ClickHandler = ({ selectedInfo, setSelectedInfo }) => {
   const mouse = useRef(new THREE.Vector2());
 
   const handleClick = async (event) => {
-    if (selectedInfo) return; // Block opening another popup if one is already open
+    // if (selectedInfo) return; // Block opening another popup if one is already open
 
     const bounds = gl.domElement.getBoundingClientRect();
     mouse.current.x = ((event.clientX - bounds.left) / bounds.width) * 2 - 1;

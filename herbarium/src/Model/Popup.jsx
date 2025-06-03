@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { Html } from '@react-three/drei';
 import EmbeddedModel from './EmbeddedModel';
-import { trackPlantVisit } from '../api/auth'; // Adjust path as necessary
+import { trackPlantVisit } from '../api/auth'; // Adjust path as needed
 
 const ObjectPopup = ({
   Cube,
@@ -16,52 +16,28 @@ const ObjectPopup = ({
   const utteranceRef = useRef(null);
   const hasTrackedRef = useRef(false);
 
-  // Track plant visit only once per popup mount
   useEffect(() => {
-    if (hasTrackedRef.current) return;
+  hasTrackedRef.current = false;
 
-    hasTrackedRef.current = true;
-
-    const track = async () => {
-      try {
-        console.log('✅ Visit tracked:', Cube);
-        await trackPlantVisit(Cube);
-      } catch (error) {
-        console.error('❌ Failed to track plant visit:', error.message);
-      }
-    };
-
-    track();
-  }, [Cube]);
-
-  // Close popup on Escape key press
-  useEffect(() => {
-    const handleEsc = (event) => {
-      if (event.key === 'Escape') {
-        window.speechSynthesis.cancel();
-        onClose();
-      }
-    };
-    window.addEventListener('keydown', handleEsc);
-    return () => window.removeEventListener('keydown', handleEsc);
-  }, [onClose]);
-
-  // Prevent multiple popups by disabling clicks outside this popup:
-  // You should handle this at parent component level.
-  // Here just ensure popup is modal-like by stopping click propagation:
-  const handleClickOutside = (e) => {
-    e.stopPropagation(); // Prevent clicks from bubbling up and triggering new popup
+  const track = async () => {
+    try {
+      console.log('✅ Visit tracked:', Cube);
+      await trackPlantVisit(Cube);
+    } catch (error) {
+      console.error('❌ Failed to track plant visit:', error.message);
+    }
   };
+
+  track();
+}, [Cube]);
 
   const handleSpeak = () => {
     window.speechSynthesis.cancel();
 
-    const text = `
-      Common Name: ${CommonName || Cube}.
-      Scientific Name: ${ScientificName}.
-      Uses: ${uses}.
-      Environment Needed For Cultivation: ${EnvironmentNeededForCultivation}.
-    `;
+    const text = `Common Name: ${CommonName || Cube}.
+Scientific Name: ${ScientificName}.
+Uses: ${uses}.
+Environment Needed For Cultivation: ${EnvironmentNeededForCultivation}.`;
 
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = 'en-US';
@@ -84,12 +60,8 @@ const ObjectPopup = ({
   };
 
   return (
-    <Html position={position} style={{ pointerEvents: 'auto' }}>
-      <div
-        id="popup"
-        onClick={handleClickOutside}
-        className="bg-white p-4 rounded shadow-lg w-72 text-sm max-h-[30rem] overflow-y-auto"
-      >
+    <Html position={position}>
+      <div className="bg-white p-4 rounded shadow-lg w-72 text-sm max-h-[30rem] overflow-y-auto" id="popup">
         <h3 className="text-lg font-bold mb-2 text-center">
           {CommonName || Cube}
         </h3>
@@ -98,19 +70,10 @@ const ObjectPopup = ({
           <EmbeddedModel path={modelPath} />
         </div>
 
-        <p>
-          <strong>Common Name:</strong> {CommonName}
-        </p>
-        <p>
-          <strong>Scientific Name:</strong> <em>{ScientificName}</em>
-        </p>
-        <p>
-          <strong>Uses:</strong> {uses}
-        </p>
-        <p>
-          <strong>Environment Needed For Cultivation:</strong>{' '}
-          {EnvironmentNeededForCultivation}
-        </p>
+        <p><strong>Common Name:</strong> {CommonName}</p>
+        <p><strong>Scientific Name:</strong> <em>{ScientificName}</em></p>
+        <p><strong>Uses:</strong> {uses}</p>
+        <p><strong>Environment Needed For Cultivation:</strong> {EnvironmentNeededForCultivation}</p>
 
         <div className="flex justify-between mt-3 space-x-2">
           <button
