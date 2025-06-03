@@ -38,8 +38,8 @@ const userSchema = new mongoose.Schema({
   ],
   
   highScore:{
-  type: String,
-},
+    type:String
+  },
   refreshToken: { type: String }, // Store the latest refresh token
 
 });

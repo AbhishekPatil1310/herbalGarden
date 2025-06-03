@@ -1,4 +1,4 @@
-'use client';
+import UpdateHighScore from '../Components/UpdateHighScore';
 
 import { useState } from 'react';
 import { fetchQuizByPlant } from '../api/quiz';
@@ -402,7 +402,9 @@ const QuizPage = () => {
   if (error) return <ErrorScreen />;
   if (loading) return <LoadingScreen />;
   if (!started) return <IntroScreen />;
-  if (currentIndex >= quizData.length) return <CompletionScreen />;
+  if (currentIndex >= quizData.length) return<> <CompletionScreen />
+  <UpdateHighScore/>
+  </>;
 
   return <QuizScreen />;
 };
