@@ -1,17 +1,21 @@
-// src/components/Loader.jsx
-import React from 'react';
-import '../Style/Loader.css';
+import React, { useEffect, useState } from "react";
+import "../Style/Loader.css"; // CSS for binary-style loader
 
-const Loader = () => {
+export default function Loader() {
+  const [isActive, setIsActive] = useState(false);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setIsActive(true);
+    }, 50);
+    return () => clearTimeout(timeout);
+  }, []);
+
   return (
-    <div className="loader-container">
-      <div className="loader">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
+    <div className={`loader ${isActive ? "JS_on" : ""}`}>
+      <div className="binary" />
+      <div className="binary" />
+      <span className="getting-there">Loading Virtual Garden...</span>
     </div>
   );
-};
-
-export default Loader;
+}

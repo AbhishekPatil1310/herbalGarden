@@ -1,27 +1,44 @@
-import React, { useState } from "react";
-import ForestModelViewer ,{HomeB}from "../Model/ForestModel";
+import React, { useState, useEffect } from "react";
+import ForestModelViewer, { HomeB } from "../Model/ForestModel";
 import Chidiya from "../Model/DoorScene";
 import Loader from "../Components/loader";
+import "../Style/World.css"; // Add this CSS file for styles
 
 function World() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [showInitialLoader, setShowInitialLoader] = useState(true);
+  const [isModelLoading, setIsModelLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowInitialLoader(false);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (showInitialLoader) {
+    return (
+      <div className="loader-overlay">
+        <Loader />
+      </div>
+    );
+  }
 
   return (
     <>
-      {isLoading && (
-        <div className="fixed inset-0 z-50 bg-black bg-opacity-80 flex justify-center items-center">
+      {isModelLoading && (
+        <div className="loader-overlay">
           <Loader />
         </div>
       )}
 
-      <div className="relative z-10">
+      <div className="homeb-container">
         <HomeB />
       </div>
 
-      <div id="Forest" className="w-full h-screen">
+      <div id="Forest" className="forest-container">
         <ForestModelViewer
           modelPath="Models/garden.glb"
-          onModelLoaded={() => setIsLoading(false)}
+          onModelLoaded={() => setIsModelLoading(false)}
         />
       </div>
 

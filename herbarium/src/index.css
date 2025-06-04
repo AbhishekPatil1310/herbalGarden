@@ -32,15 +32,7 @@ code {
   z-index: 999;
 }
 
-#Forest {
-  position: fixed;
-  top: 0px;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: #f0f0f0;
-  z-index: 0;
-}
+
 
 #DoorLeft { position: relative; margin-left: 10px; width: 264px; height: 550px; }
 
@@ -152,30 +144,5 @@ code {
     background-position: 0 0;
   }
 }
-#Chidiya {
-  position: fixed;
-  bottom: 50px;
-  right: 0;
-  width: 200px;
-  height: 200px;
-  z-index: 40;
-}
 
-/* Medium screens (tablets) */
-@media (max-width: 768px) {
-  #Chidiya {
-    width: 150px;
-    height: 150px;
-    bottom: 40px;
-  }
-}
-
-/* Small screens (phones) */
-@media (max-width: 480px) {
-  #Chidiya {
-    width: 100px;
-    height: 100px;
-    bottom: 30px;
-  }
-}
 

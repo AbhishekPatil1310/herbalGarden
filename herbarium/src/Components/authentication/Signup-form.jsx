@@ -41,47 +41,52 @@ export default function SignupForm({ switchToLogin }) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="signup-form">
-      <InputField label="Full Name" {...register("name")} error={errors.name} />
-      <InputField label="Email" {...register("email")} error={errors.email} />
-      <InputField
-        label="Password"
-        type="password"
-        {...register("password")}
-        error={errors.password}
-      />
-      <InputField
-        label="Confirm Password"
-        type="password"
-        {...register("confirmPassword")}
-        error={errors.confirmPassword}
-      />
+    <div className="signup-container">
+      <h2 className="signup-heading">Create Account</h2>
 
-      <button type="submit" disabled={authLoading} className="submit-button">
-        {authLoading ? "Creating Account..." : "Create Account"}
-      </button>
+      <form onSubmit={handleSubmit(onSubmit)} className="signup-form">
+        <InputField label="Full Name" {...register("name")} error={errors.name} />
+        <InputField label="Email" {...register("email")} error={errors.email} />
+        <InputField
+          label="Password"
+          type="password"
+          {...register("password")}
+          error={errors.password}
+        />
+        <InputField
+          label="Confirm Password"
+          type="password"
+          {...register("confirmPassword")}
+          error={errors.confirmPassword}
+        />
 
-      <p className="switch-text">
-        Already have an account?{" "}
-        <button type="button" onClick={switchToLogin} className="switch-link">
-          Login
+        <button type="submit" disabled={authLoading} className="signup-button">
+          {authLoading ? "Creating Account..." : "Create Account"}
         </button>
-      </p>
-    </form>
+
+        <p className="signup-switch-text">
+          Already have an account?{" "}
+          <button type="button" onClick={switchToLogin} className="signup-switch-link">
+            Login
+          </button>
+        </p>
+      </form>
+    </div>
   );
 }
 
 const InputField = forwardRef(({ label, type = "text", error, ...props }, ref) => {
   return (
-    <div className="input-field">
-      <label className="input-label">{label}</label>
+    <div className="signup-input-field">
+      <label className="signup-input-label">{label}</label>
       <input
         type={type}
         ref={ref}
-        className="input-box"
+        className="signup-input"
         {...props}
+        placeholder={label}
       />
-      {error && <p className="error-message">{error.message}</p>}
+      {error && <p className="signup-error-message">{error.message}</p>}
     </div>
   );
 });

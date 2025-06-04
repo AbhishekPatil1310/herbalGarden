@@ -31,26 +31,34 @@ export default function LoginForm({ switchToSignup }) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="login-form">
-      <InputField label="Email" {...register("email")} error={errors.email} />
-      <InputField
-        label="Password"
-        type="password"
-        {...register("password")}
-        error={errors.password}
-      />
+    <div className="container">
+      <h2 className="heading">Login</h2>
 
-      <button type="submit" disabled={authLoading} className="submit-button">
-        {authLoading ? "Logging in..." : "Login"}
-      </button>
+      <form onSubmit={handleSubmit(onSubmit)} className="form">
+        <InputField label="Email" {...register("email")} error={errors.email} />
+        <InputField
+          label="Password"
+          type="password"
+          {...register("password")}
+          error={errors.password}
+        />
 
-      <p className="signup-text">
-        Don't have an account?{" "}
-        <button type="button" onClick={switchToSignup} className="signup-link">
-          Sign up
+        <button
+          type="submit"
+          disabled={authLoading}
+          className="login-button"
+        >
+          {authLoading ? "Logging in..." : "Login"}
         </button>
-      </p>
-    </form>
+
+        <p className="signup-text agreement">
+          Don't have an account?{" "}
+          <button type="button" onClick={switchToSignup} className="signup-link">
+            Sign up
+          </button>
+        </p>
+      </form>
+    </div>
   );
 }
 
@@ -61,8 +69,9 @@ const InputField = forwardRef(({ label, type = "text", error, ...props }, ref) =
       <input
         type={type}
         ref={ref}
-        className="input-box"
+        className="input"
         {...props}
+        placeholder={label}
       />
       {error && <p className="error-message">{error.message}</p>}
     </div>
