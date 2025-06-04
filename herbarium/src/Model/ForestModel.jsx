@@ -46,6 +46,7 @@ const CameraController = () => {
       maxPolarAngle={Math.PI / 2} // 🔒 Stop before camera goes underneath
       minDistance={5}
       maxDistance={70}
+      enableZoom={false}
     />
   );
 };
