@@ -8,8 +8,6 @@ const UpdateHighScore = () => {
   useEffect(() => {
     const checkAndUpdateHighScore = async () => {
       try {
-        const token = localStorage.getItem('token'); // Replace with your auth logic
-
         const res = await axios.get(
           `${import.meta.env.VITE_API_BASE_URL}/highscore`,
           {
