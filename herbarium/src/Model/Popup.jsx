@@ -14,19 +14,22 @@ const ObjectPopup = ({
 }) => {
   const modelPath = `/Models/${Cube}.glb`;
   const utteranceRef = useRef(null);
-  useEffect(() => {
-    const track = async () => {
-      try {
-        await trackPlantVisit(Cube);
-      } catch (error) {
-        console.error('❌ Failed to track plant visit:', error.message);
-      }
-    };
+  const hasTrackedRef = useRef(false);
 
-    if (Cube) {
-      track();
+  useEffect(() => {
+  hasTrackedRef.current = false;
+
+  const track = async () => {
+    try {
+      console.log('✅ Visit tracked:', Cube);
+      await trackPlantVisit(Cube);
+    } catch (error) {
+      console.error('❌ Failed to track plant visit:', error.message);
     }
-  }, [Cube]);
+  };
+
+  track();
+}, [Cube]);
 
   const handleSpeak = () => {
     window.speechSynthesis.cancel();
@@ -58,10 +61,7 @@ Environment Needed For Cultivation: ${EnvironmentNeededForCultivation}.`;
 
   return (
     <Html position={position}>
-      <div
-        className="bg-white p-4 rounded shadow-lg w-72 text-sm max-h-[30rem] overflow-y-auto"
-        id="popup"
-      >
+      <div className="bg-white p-4 rounded shadow-lg w-72 text-sm max-h-[30rem] overflow-y-auto" id="popup">
         <h3 className="text-lg font-bold mb-2 text-center">
           {CommonName || Cube}
         </h3>
@@ -70,19 +70,10 @@ Environment Needed For Cultivation: ${EnvironmentNeededForCultivation}.`;
           <EmbeddedModel path={modelPath} />
         </div>
 
-        <p>
-          <strong>Common Name:</strong> {CommonName}
-        </p>
-        <p>
-          <strong>Scientific Name:</strong> <em>{ScientificName}</em>
-        </p>
-        <p>
-          <strong>Uses:</strong> {uses}
-        </p>
-        <p>
-          <strong>Environment Needed For Cultivation:</strong>{' '}
-          {EnvironmentNeededForCultivation}
-        </p>
+        <p><strong>Common Name:</strong> {CommonName}</p>
+        <p><strong>Scientific Name:</strong> <em>{ScientificName}</em></p>
+        <p><strong>Uses:</strong> {uses}</p>
+        <p><strong>Environment Needed For Cultivation:</strong> {EnvironmentNeededForCultivation}</p>
 
         <div className="flex justify-between mt-3 space-x-2">
           <button

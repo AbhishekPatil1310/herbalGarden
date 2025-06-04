@@ -170,39 +170,4 @@ const refreshTheToken = async (req, res) => {
   }
 };
 
-// Logout handler
-const logout = async (req, res) => {
-  try {
-    const refreshToken = req.cookies?.refreshToken;
-
-    if (!refreshToken) {
-      return res.status(200).json({ message: 'Already logged out' });
-    }
-    // Optional: Invalidate the refresh token in the database
-    const user = await User.findOne({ refreshToken });
-
-    if (user) {
-      user.refreshToken = null;
-      await user.save();
-    }
-
-    res
-      .clearCookie('accessToken', {
-        httpOnly: true,
-        secure: false, // Set to true in production with HTTPS
-        sameSite: 'Lax',
-      })
-      .clearCookie('refreshToken', {
-        httpOnly: true,
-        secure: false,
-        sameSite: 'Lax',
-      })
-      .status(200)
-      .json({ message: 'Logout successful' });
-  } catch (error) {
-    console.error('Logout error:', error);
-    res.status(500).json({ message: 'Failed to logout', error: error.message });
-  }
-};
-
-export { login, register, refreshTheToken, logout };
+export { login, register, refreshTheToken };

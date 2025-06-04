@@ -1,10 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import {
-  loginUser,
-  registerUser,
-  fetchAuthenticatedUser,
-  logoutUser,
-} from '../api/auth';
+import { loginUser, registerUser, fetchAuthenticatedUser } from '../api/auth';
 
 const AuthContext = createContext();
 
@@ -61,23 +56,13 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const logout = async () => {
-    setAuthLoading(true);
-    setError(null);
-    try {
-      await logoutUser(); // API call to backend
-      setUser(null); // Clear user from state
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setAuthLoading(false);
-    }
-  };
+  const LogOut = () =>{
+    setUser(null);
+    localStorage.removeItem('token');
+  }
 
   return (
-    <AuthContext.Provider
-      value={{ user, login, signup, authLoading, error, logout }}
-    >
+    <AuthContext.Provider value={{ user, login, signup, authLoading, error,LogOut }}>
       {children}
     </AuthContext.Provider>
   );
