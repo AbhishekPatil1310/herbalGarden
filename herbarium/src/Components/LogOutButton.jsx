@@ -1,14 +1,14 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext'; // adjust path as needed
-import '../../Style/LogOutButton.css'; //✅ make sure this CSS file includes the styles you posted
+import { useAuth } from '../context/AuthContext'; // adjust path as needed
+import "../Style/LogOutButton.css" //✅ make sure this CSS file includes the styles you posted
 
 const LogoutButton = () => {
-  const { logout } = useAuth();
+  const { LogOut } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    logout();
+    LogOut();
     navigate('/');
   };
 

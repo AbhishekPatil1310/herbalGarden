@@ -1,21 +1,16 @@
 import { Router } from 'express';
 import {
   login,
-  logout,
   refreshTheToken,
   register,
 } from '../controllers/auth.controller.js';
 import { verifyJWT } from '../middlewares/auth.middleware.js';
-import {
-  trackPlantVisit,
-  handleHighScore,
-} from '../controllers/user.controller.js';
+import { trackPlantVisit,handleHighScore } from '../controllers/user.controller.js';
 
 const appRouter = Router();
 
 appRouter.post('/register', register);
 appRouter.post('/login', login);
-appRouter.post('/logout', logout);
 appRouter.post('/refresh-token', refreshTheToken);
 
 appRouter.get('/me', verifyJWT);
@@ -27,5 +22,6 @@ appRouter
   .route('/highscore')
   .get(verifyJWT, handleHighScore)
   .post(verifyJWT, handleHighScore);
+
 
 export default appRouter;
