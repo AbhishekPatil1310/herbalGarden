@@ -30,7 +30,17 @@ export const registerUser = async ({ fullName, email, password }) => {
   return data;
 };
 
-// api/auth.js
+export const logoutUser = async () => {
+  const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/logout`, {
+    method: 'POST',
+    credentials: 'include', // Ensure cookies are included
+  });
+
+  if (!res.ok) throw new Error((await res.json()).message || 'Logout failed');
+  return res.json();
+};
+
+// check whether user is authenticated or not
 export const fetchAuthenticatedUser = async () => {
   const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/me`, {
     credentials: 'include', // so cookies are sent!
