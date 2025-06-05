@@ -1,14 +1,15 @@
 // Sparrow.jsx
 import React, { useRef, useEffect } from 'react';
 import { useGLTF, useAnimations } from '@react-three/drei';
-import { useFrame } from '@react-three/fiber';
 import { useChatPanel } from '../context/ChatPanelContext';
 
-export default function Sparrow({ position = [0, 0, 0], pathCurve }) {
+export default function Sparrow({ position = [0, 0, 0] }) {
   const group = useRef();
-  const { scene, animations } = useGLTF('/Models/duolingo.glb');  // your sparrow .glb path
+  const { scene, animations } = useGLTF(
+    'https://my-bucket-17-01-2025.s3.ap-south-1.amazonaws.com/Final_year_Models/Models/duolingo.glb'
+  ); // your sparrow .glb path
   const { actions } = useAnimations(animations, group);
-  const { openPanel } = useChatPanel();  // Import openPanel
+  const { openPanel } = useChatPanel(); // Import openPanel
 
   // Play flying animation on mount
   useEffect(() => {
@@ -25,16 +26,16 @@ export default function Sparrow({ position = [0, 0, 0], pathCurve }) {
       scale={5.0}
       position={loweredPosition}
       onClick={(e) => {
-        e.stopPropagation();  // prevent bubbling in canvas
-        openPanel();          // open chat panel
+        e.stopPropagation(); // prevent bubbling in canvas
+        openPanel(); // open chat panel
       }}
       onPointerOver={(e) => {
         e.stopPropagation();
-        document.body.style.cursor = 'pointer';  // Optional: show pointer on hover
+        document.body.style.cursor = 'pointer'; // Optional: show pointer on hover
       }}
       onPointerOut={(e) => {
         e.stopPropagation();
-        document.body.style.cursor = 'default';  // Reset cursor
+        document.body.style.cursor = 'default'; // Reset cursor
       }}
     />
   );

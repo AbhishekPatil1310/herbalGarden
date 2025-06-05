@@ -12,7 +12,8 @@ const ObjectPopup = ({
   EnvironmentNeededForCultivation,
   onClose,
 }) => {
-  const modelPath = `/Models/${Cube}.glb`;
+  const modelUrl = `https://my-bucket-17-01-2025.s3.ap-south-1.amazonaws.com/Final_year_Models/Models/${Cube}.glb`;
+  const modelPath = modelUrl;
   const utteranceRef = useRef(null);
   useEffect(() => {
     const track = async () => {
