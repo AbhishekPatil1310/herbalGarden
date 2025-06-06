@@ -2,7 +2,7 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import NavItem from './NavItem';
 import AiIcon from './AiIcon';
-import LogoutButton from '../authentication/LogOutButton';
+import LogoutButton from '../authentication/LogoutButton';
 import '../../Style/Navbar.css';
 
 const Navbar = () => {
