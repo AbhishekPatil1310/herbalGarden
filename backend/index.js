@@ -15,6 +15,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 const allowedOrigins = isProduction
   ? [
       'https://herbal-garden-7pprr7u8y-abhishek-kumars-projects-7905b109.vercel.app',
+      'https://herbal-garden-git-main-abhishek-kumars-projects-7905b109.vercel.app',
     ]
   : ['http://localhost:5173'];
 
