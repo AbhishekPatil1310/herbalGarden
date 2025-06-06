@@ -1,10 +1,10 @@
-import React, { Suspense, useState, useEffect, useRef } from "react";
-import { Canvas, useThree } from "@react-three/fiber";
-import { OrbitControls, useGLTF, Sky } from "@react-three/drei"; // Switched to OrbitControls
-import ObjectPopup from "./Popup";
-import * as THREE from "three";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import React, { Suspense, useState, useEffect, useRef } from 'react';
+import { Canvas, useThree } from '@react-three/fiber';
+import { OrbitControls, useGLTF, Sky } from '@react-three/drei'; // Switched to OrbitControls
+import ObjectPopup from './Popup';
+import * as THREE from 'three';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 // Load and render GLB model as-is (like a 3D map)
 const Model = ({ url, onLoaded }) => {
@@ -70,26 +70,30 @@ const ClickHandler = ({ selectedInfo, setSelectedInfo }) => {
     if (intersects.length > 0) {
       const hit = intersects[0].object;
       if (hit.userData.clickable) {
-        const cubeName = hit.name || "UnnamedObject";
+        const cubeName = hit.name || 'UnnamedObject';
         const worldPosition = hit.getWorldPosition(new THREE.Vector3());
 
-        window.dispatchEvent(new CustomEvent("cube-clicked", { detail: { cubeName } }));
+        window.dispatchEvent(
+          new CustomEvent('cube-clicked', { detail: { cubeName } })
+        );
 
         // Skip some specific objects from opening popup
         if (
-          cubeName === "Object_2" ||
-          cubeName === "textures" ||
-          cubeName === "Mesh_0007" ||
-          cubeName === "Mesh_0007_4"
+          cubeName === 'Object_2' ||
+          cubeName === 'textures' ||
+          cubeName === 'Mesh_0007' ||
+          cubeName === 'Mesh_0007_4'
         ) {
           return;
         }
 
         // Skip if cubeName starts with "textures"
-        if (cubeName.toLowerCase().startsWith("textures")) return;
+        if (cubeName.toLowerCase().startsWith('textures')) return;
 
         try {
-          const res = await axios.get(`http://localhost:5000/api/v1/cube/${cubeName}`);
+          const res = await axios.get(
+            `${import.meta.env.VITE_API_BASE_URL}/cube/${cubeName}`
+          );
           const plant = res.data;
 
           setSelectedInfo({
@@ -98,18 +102,19 @@ const ClickHandler = ({ selectedInfo, setSelectedInfo }) => {
             position: worldPosition,
             ScientificName: plant.ScientificName,
             uses: plant.Uses,
-            EnvironmentNeededForCultivation: plant.EnvironmentNeededForCultivation,
+            EnvironmentNeededForCultivation:
+              plant.EnvironmentNeededForCultivation,
           });
         } catch (error) {
-          console.error("Plant info not found:", error);
+          console.error('Plant info not found:', error);
           setSelectedInfo({
             Cube: cubeName,
             position: worldPosition,
-            description: "No info found in database.",
-            CommonName: "",
-            ScientificName: "",
-            uses: "",
-            EnvironmentNeededForCultivation: "",
+            description: 'No info found in database.',
+            CommonName: '',
+            ScientificName: '',
+            uses: '',
+            EnvironmentNeededForCultivation: '',
           });
         }
       }
@@ -117,8 +122,8 @@ const ClickHandler = ({ selectedInfo, setSelectedInfo }) => {
   };
 
   useEffect(() => {
-    gl.domElement.addEventListener("click", handleClick);
-    return () => gl.domElement.removeEventListener("click", handleClick);
+    gl.domElement.addEventListener('click', handleClick);
+    return () => gl.domElement.removeEventListener('click', handleClick);
   }, [gl, selectedInfo]); // re-register listener if selectedInfo changes
 
   return null;
@@ -130,7 +135,7 @@ export const HomeB = () => {
   return (
     <button
       id="Ht"
-      onClick={() => navigate("/home")}
+      onClick={() => navigate('/home')}
       className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md transition"
     >
       ⬅ Go to Home
@@ -154,7 +159,10 @@ const ForestModelViewer = ({ modelPath, onModelLoaded }) => {
         </Suspense>
 
         <CameraController />
-        <ClickHandler selectedInfo={selectedInfo} setSelectedInfo={setSelectedInfo} />
+        <ClickHandler
+          selectedInfo={selectedInfo}
+          setSelectedInfo={setSelectedInfo}
+        />
 
         {selectedInfo && (
           <ObjectPopup
@@ -163,7 +171,9 @@ const ForestModelViewer = ({ modelPath, onModelLoaded }) => {
             CommonName={selectedInfo.CommonName}
             ScientificName={selectedInfo.ScientificName}
             uses={selectedInfo.uses}
-            EnvironmentNeededForCultivation={selectedInfo.EnvironmentNeededForCultivation}
+            EnvironmentNeededForCultivation={
+              selectedInfo.EnvironmentNeededForCultivation
+            }
             onClose={() => setSelectedInfo(null)}
           />
         )}
