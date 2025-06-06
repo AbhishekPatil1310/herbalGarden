@@ -299,7 +299,7 @@
 
 .quiz-button.submit {
   background: linear-gradient(to right, #3b82f6, #8b5cf6, #ec4899);
-  color: white;
+  color: #1f2937; 
   border-color: #93c5fd;
 }
 
@@ -310,7 +310,7 @@
 
 .quiz-button.disabled {
   background-color: #d1d5db;
-  color: #6b7280;
+  color: #4b5563; /* text-gray-600 */
   cursor: not-allowed;
   border-color: #d1d5db;
 }

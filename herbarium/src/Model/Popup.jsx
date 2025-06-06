@@ -12,7 +12,8 @@ const ObjectPopup = ({
   EnvironmentNeededForCultivation,
   onClose,
 }) => {
-  const modelPath = `/Models/${Cube}.glb`;
+  const modelUrl = `/Models/${Cube}.glb`;
+  const modelPath = modelUrl;
   const utteranceRef = useRef(null);
   useEffect(() => {
     const track = async () => {

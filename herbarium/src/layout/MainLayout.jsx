@@ -1,6 +1,6 @@
 import React from 'react';
-import Navbar from '../components/navbar/Navbar';
-import ChatPanel from '../components/ChatPanel';
+import Navbar from '../Components/navbar/Navbar';
+import ChatPanel from '../Components/ChatPanel';
 
 const MainLayout = ({ children }) => {
   return (

@@ -46,6 +46,7 @@ const ChatPanel = () => {
       const botMessage = { sender: 'bot', text: reply };
       setMessages((prev) => [...prev, botMessage]);
     } catch (error) {
+      console.log('Error in ChatPanel.jsx : ', error);
       setMessages((prev) => [
         ...prev,
         { sender: 'bot', text: 'Failed to get response.' },

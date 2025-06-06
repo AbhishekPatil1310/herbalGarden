@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
+    "check-case": "find src -type f | sort | uniq -iD",
     "preview": "vite preview"
   },
   "dependencies": {
