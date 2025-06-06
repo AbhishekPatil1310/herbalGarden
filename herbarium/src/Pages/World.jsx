@@ -37,7 +37,7 @@ function World() {
 
       <div id="Forest" className="forest-container">
         <ForestModelViewer
-          modelPath="Models/garden.glb"
+          modelPath="https://iljmqfsljqrxmmdwpsch.supabase.co/storage/v1/object/public/models//garden.glb"
           onModelLoaded={() => setIsModelLoading(false)}
         />
       </div>
