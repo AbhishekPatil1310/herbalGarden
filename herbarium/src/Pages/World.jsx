@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ForestModelViewer, { HomeB } from '../Model/ForestModel';
 import Chidiya from '../Model/DoorScene';
 import Loader from '../Components/loader';
-// import "../Style/World.css"; // Add this CSS file for styles
+import '../Style/world.css'; // Add this CSS file for styles
 
 function World() {
   const [showInitialLoader, setShowInitialLoader] = useState(true);
