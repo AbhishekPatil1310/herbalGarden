@@ -5,9 +5,7 @@ import { useChatPanel } from '../context/ChatPanelContext';
 
 export default function Sparrow({ position = [0, 0, 0] }) {
   const group = useRef();
-  const { scene, animations } = useGLTF(
-    'https://my-bucket-17-01-2025.s3.ap-south-1.amazonaws.com/Final_year_Models/Models/duolingo.glb'
-  ); // your sparrow .glb path
+  const { scene, animations } = useGLTF('/Models/duolingo.glb'); // your sparrow .glb path
   const { actions } = useAnimations(animations, group);
   const { openPanel } = useChatPanel(); // Import openPanel
 
