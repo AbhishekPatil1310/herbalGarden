@@ -12,7 +12,10 @@ dotenv.config();
 const app = express(); // initialize the express js
 app.use(
   cors({
-    origin: ['http://localhost:5173'],
+    origin: [
+      'http://localhost:5173',
+      'https://herbal-garden-git-main-abhishek-kumars-projects-7905b109.vercel.app/',
+    ],
     credentials: true,
   })
 );
