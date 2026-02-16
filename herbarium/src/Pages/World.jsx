@@ -37,7 +37,7 @@ function World() {
 
       <div id="Forest" className="forest-container">
         <ForestModelViewer
-          modelPath="https://iljmqfsljqrxmmdwpsch.supabase.co/storage/v1/object/public/models//garden.glb"
+          modelPath="https://lbmpmobejkpltgctghhz.supabase.co/storage/v1/object/public/test/garden.glb"
           onModelLoaded={() => setIsModelLoading(false)}
         />
       </div>
@@ -48,3 +48,4 @@ function World() {
 }
 
 export default World;
+
